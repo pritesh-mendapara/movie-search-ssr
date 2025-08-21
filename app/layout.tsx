@@ -10,6 +10,9 @@ export const metadata: Metadata = {
     title: "CineScope — Movie Search (SSR)",
     description: "Discover and explore movies with our server-side rendered movie search application",
     keywords: ["movies", "search", "cinema", "films", "OMDb"],
+    icons: {
+        icon: "/favicon.ico",
+    },
 };
 
 export default function RootLayout({
