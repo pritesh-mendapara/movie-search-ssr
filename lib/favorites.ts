@@ -1,7 +1,14 @@
 import { cookies } from "next/headers";
-import type { Movie } from "@/types";
 
 const FAVORITES_COOKIE = "cinescope-favorites";
+
+interface Movie {
+    imdbID: string;
+    title: string;
+    year: string;
+    poster?: string;
+    type: string;
+}
 
 export async function getFavorites(): Promise<Movie[]> {
     const cookieStore = await cookies();
