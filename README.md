@@ -2,6 +2,10 @@
 
 A fully server-side rendered movie search application built with Next.js, TypeScript, and Tailwind CSS v4. Features AI-powered recommendations, intelligent movie analysis, and server-side favorites management with secure cookie persistence for optimal performance and SEO.
 
+## Demo
+
+👉 [Live Demo on Vercel](https://cinescopemovie.vercel.app/)
+
 ## Features
 
 - 🎬 **Movie Search**: Search movies using the OMDb API with server-side rendering
