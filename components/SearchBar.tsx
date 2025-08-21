@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 interface SearchBarProps {
     initialQuery?: string;

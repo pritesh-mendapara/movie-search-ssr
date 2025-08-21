@@ -1,8 +1,9 @@
 import SearchBar from "@/components/SearchBar";
 import EmptyState from "@/components/EmptyState";
-import { getMovies, type Movie } from "@/lib/omdb";
+import { getMovies } from "@/lib/omdb";
 import MovieCard from "@/components/MovieCard";
 import Pagination from "@/components/Pagination";
+import type { Movie } from "@/types";
 
 interface HomePageProps {
     searchParams: {

@@ -1,6 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/favorites", label: "Favorites" },
+    { href: "/ai-recommendations", label: "AI Recommendations" },
+];
 
 const Header = () => {
+    const pathname = usePathname();
     return (
         <header className="border-border bg-surface border-b">
             <div className="container mx-auto px-4 py-4">
@@ -9,15 +19,14 @@ const Header = () => {
                         CineScope
                     </Link>
                     <div className="flex items-center space-x-4">
-                        <Link href="/" className="text-neutral-text hover:text-text transition-colors">
-                            Home
-                        </Link>
-                        <Link href="/favorites" className="text-neutral-text hover:text-text transition-colors">
-                            Favorites
-                        </Link>
-                        <a href="https://www.omdbapi.com/" target="_blank" rel="noopener noreferrer" className="text-neutral-text hover:text-text transition-colors">
-                            OMDb API
-                        </a>
+                        {navLinks.map((link) => {
+                            const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+                            return (
+                                <Link key={link.href} href={link.href} className={`transition-colors ${isActive ? "text-text font-semibold" : "text-neutral-text hover:text-text"}`}>
+                                    {link.label}
+                                </Link>
+                            );
+                        })}
                     </div>
                 </nav>
             </div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Movie } from "@/lib/omdb";
+import type { Movie } from "@/types";
 
 interface MovieCardProps {
     movie: Movie;

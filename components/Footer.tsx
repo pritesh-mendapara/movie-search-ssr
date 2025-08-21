@@ -4,10 +4,7 @@ const Footer = () => {
             <div className="container mx-auto px-4 py-6">
                 <div className="text-neutral-text text-center">
                     <p>
-                        © {new Date().getFullYear()} CineScope. Powered by{" "}
-                        <a href="https://www.omdbapi.com/" target="_blank" rel="noopener noreferrer" className="hover:text-text transition-colors">
-                            OMDb API
-                        </a>
+                        © {new Date().getFullYear()} CineScope. Made by <span className="text-text font-semibold">Pritesh Mendapara.</span>
                     </p>
                 </div>
             </div>

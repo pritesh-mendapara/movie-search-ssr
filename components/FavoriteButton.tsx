@@ -1,41 +1,30 @@
-"use client";
-
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { addFavorite, removeFavorite, selectIsFavorite } from "@/store/features/favoritesSlice";
-import type { MovieDetail } from "@/lib/omdb";
+import { isFavorite } from "@/lib/favorites";
+import { addFavoriteAction, removeFavoriteAction } from "@/lib/actions";
+import type { MovieDetail } from "@/types";
 
 interface FavoriteButtonProps {
     movie: MovieDetail;
 }
 
-const FavoriteButton = ({ movie }: FavoriteButtonProps) => {
-    const dispatch = useAppDispatch();
-    const isFavorite = useAppSelector((state) => selectIsFavorite(state, movie.imdbID));
+export async function FavoriteButton({ movie }: FavoriteButtonProps) {
+    const isMovieFavorite = await isFavorite(movie.imdbID);
 
-    const handleToggle = () => {
-        if (isFavorite) {
-            dispatch(removeFavorite(movie.imdbID));
-        } else {
-            dispatch(
-                addFavorite({
-                    imdbID: movie.imdbID,
-                    title: movie.Title,
-                    year: movie.Year,
-                    poster: movie.Poster,
-                }),
-            );
-        }
+    const favoriteMovie = {
+        imdbID: movie.imdbID,
+        title: movie.Title,
+        year: movie.Year,
+        poster: movie.Poster,
     };
     return (
-        <button
-            onClick={handleToggle}
-            className={`focus:ring-highlight/20 w-full cursor-pointer rounded-lg px-4 py-3 font-medium transition-colors focus:ring-2 focus:outline-none ${
-                isFavorite ? "bg-red-600 text-white hover:bg-red-700" : "bg-highlight text-highlight-text hover:bg-highlight/90"
-            }`}
-        >
-            {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-        </button>
+        <form>
+            <button
+                formAction={isMovieFavorite ? removeFavoriteAction.bind(null, movie.imdbID) : addFavoriteAction.bind(null, favoriteMovie)}
+                className={`focus:ring-highlight/20 w-full cursor-pointer rounded-lg px-4 py-3 font-medium transition-colors focus:ring-2 focus:outline-none ${
+                    isMovieFavorite ? "bg-red-600 text-white hover:bg-red-700" : "bg-highlight text-highlight-text hover:bg-highlight/90"
+                }`}
+            >
+                {isMovieFavorite ? "Remove from Favorites" : "Add to Favorites"}
+            </button>
+        </form>
     );
-};
-
-export default FavoriteButton;
+}

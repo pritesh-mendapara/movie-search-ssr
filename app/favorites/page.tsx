@@ -1,38 +1,10 @@
-"use client";
-
-import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { hydrateFavorites, removeFavorite, selectFavorites, selectIsHydrated } from "@/store/features/favoritesSlice";
+import { getFavorites } from "@/lib/favorites";
+import { removeFavoriteAction } from "@/lib/actions";
 
-export default function FavoritesPage() {
-    const dispatch = useAppDispatch();
-    const favorites = useAppSelector(selectFavorites);
-    const isHydrated = useAppSelector(selectIsHydrated);
-
-    useEffect(() => {
-        if (!isHydrated) {
-            dispatch(hydrateFavorites());
-        }
-    }, [dispatch, isHydrated]);
-
-    const handleRemoveFavorite = (imdbID: string) => {
-        dispatch(removeFavorite(imdbID));
-    };
-
-    if (!isHydrated) {
-        return (
-            <div className="container mx-auto px-4 py-8">
-                <div className="flex min-h-[400px] items-center justify-center">
-                    <div className="text-center">
-                        <div className="border-highlight mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2"></div>
-                        <p className="text-neutral-text">Loading favorites...</p>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+export default async function FavoritesPage() {
+    const favorites = await getFavorites();
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -84,7 +56,7 @@ export default function FavoritesPage() {
                                                     strokeLinecap="round"
                                                     strokeLinejoin="round"
                                                     strokeWidth={2}
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 002 2z"
                                                 />
                                             </svg>
                                         </div>
@@ -93,15 +65,28 @@ export default function FavoritesPage() {
                             </Link>
                             <div className="p-4">
                                 <Link href={`/movie/${movie.imdbID}`}>
-                                    <h3 className="text-text hover:text-highlight mb-1 line-clamp-2 font-semibold transition-colors">{movie.title}</h3>
+                                    <h3 className="text-text hover:text-neutral-text mb-1 line-clamp-2 font-semibold transition-colors">{movie.title}</h3>
                                 </Link>
                                 <p className="text-neutral-text mb-3 text-sm">{movie.year}</p>
-                                <button
-                                    onClick={() => handleRemoveFavorite(movie.imdbID)}
-                                    className="w-full rounded-md bg-red-600 px-3 py-2 text-sm text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-red-500/20 focus:outline-none"
-                                >
-                                    Remove from Favorites
-                                </button>
+                                <div className="flex items-center justify-between">
+                                    <div className="text-neutral-text text-sm">Added to favorites</div>
+                                    <form>
+                                        <button
+                                            formAction={removeFavoriteAction.bind(null, movie.imdbID)}
+                                            className="text-neutral-text hover:text-danger flex h-8 w-8 cursor-pointer items-center justify-center rounded p-0 transition-colors"
+                                            title="Remove from favorites"
+                                        >
+                                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     ))}

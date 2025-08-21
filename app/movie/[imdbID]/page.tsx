@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getMovieById } from "@/lib/omdb";
-import FavoriteButton from "@/components/FavoriteButton";
+import { FavoriteButton } from "@/components/FavoriteButton";
+import AIAnalysis from "@/components/AIAnalysis";
+import GoBack from "@/components/GoBack";
 
 interface MoviePageProps {
     params: {
@@ -12,7 +14,8 @@ interface MoviePageProps {
 
 export async function generateMetadata({ params }: MoviePageProps): Promise<Metadata> {
     try {
-        const movie = await getMovieById(params.imdbID);
+        const { imdbID } = await params;
+        const movie = await getMovieById(imdbID);
 
         return {
             title: `${movie.Title} (${movie.Year}) - CineScope`,
@@ -32,10 +35,12 @@ export async function generateMetadata({ params }: MoviePageProps): Promise<Meta
 
 export default async function MoviePage({ params }: MoviePageProps) {
     try {
-        const movie = await getMovieById(params.imdbID);
+        const { imdbID } = await params;
+        const movie = await getMovieById(imdbID);
 
         return (
             <div className="container mx-auto px-4 py-8">
+                <GoBack />
                 <div className="grid gap-8 md:grid-cols-3">
                     <div className="md:col-span-1">
                         <div className="sticky top-8">
@@ -106,6 +111,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
                                     </div>
                                 )}
                             </div>
+                            <AIAnalysis movie={movie} />
                         </div>
                     </div>
                 </div>
